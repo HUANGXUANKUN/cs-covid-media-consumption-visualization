@@ -1,7 +1,5 @@
-# dependencies
-node_modules
-**/.DS_Store
-# misc
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.idea
+.venv
+.env
+.DS_Store
+data-crawler/scrapy_crawlers/data
