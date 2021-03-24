@@ -1,3 +1,23 @@
-.App {
+.app {
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+}
+
+.canvas-container {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    bottom: -38.2%;
+    z-index: 2;
+}
+
+.visualization-container {
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 3rem);
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
+    z-index: 1;
 }
