@@ -1,5 +1,0 @@
-.idea
-.venv
-.env
-.DS_Store
-data-crawler/scrapy_crawlers/data
