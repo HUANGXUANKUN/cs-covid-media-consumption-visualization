@@ -1,7 +1,9 @@
 # dependencies
 node_modules
 **/.DS_Store
+
 # misc
+.eslintcache
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
