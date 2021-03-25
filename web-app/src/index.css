@@ -1,3 +1,9 @@
+/* stylelint-disable */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* stylelint-enable */
+
 html,
 body,
 #root {
@@ -7,21 +13,29 @@ body,
     padding: 0;
 }
 
+div {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 body {
     overflow: hidden;
-    background: #16222a; /* fallback for old browsers */
+    background: #1a2980; /* fallback for old browsers */
     /* stylelint-disable-next-line function-linear-gradient-no-nonstandard-direction */
     background: -webkit-linear-gradient(
-        to left,
-        #3a6073,
-        #16222a
+        to right,
+        #26d0ce,
+        #1a2980
     ); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(
-        to left,
-        #3a6073,
-        #16222a
+        to right,
+        #26d0ce,
+        #1a2980
     ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
         'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
         'Helvetica Neue', sans-serif;

@@ -3,7 +3,7 @@ import React from 'react'
 import { Canvas } from 'react-three-fiber'
 import { ReactComponent as CircleLine } from './circle-line.svg'
 import CameraControls from './CameraControls'
-import config from './config'
+import config from './Globe/config'
 import Globe from './Globe'
 import './GlobeCanvas.css'
 
@@ -28,8 +28,8 @@ const GlobeCanvas = () => (
                     ]}
                 />
                 <meshLambertMaterial
-                    opacity={0.5}
-                    color='#16222A'
+                    opacity={0.25}
+                    color='#26d0ce'
                     transparent
                 />
             </mesh>

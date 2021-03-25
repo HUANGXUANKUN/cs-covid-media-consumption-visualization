@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { extend, useFrame, useThree } from 'react-three-fiber'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import config from './config'
+import config from '../Globe/config'
 
 extend({ OrbitControls })
 
@@ -11,10 +11,16 @@ const CameraControls = () => {
         gl: { domElement },
     } = useThree()
     const controls = useRef()
+
     useFrame(() => {
         controls.current.update()
     })
-    camera.position.z = config.globeRadius * 2
+
+    camera.position.set(
+        config.globeRadius * 1.5,
+        config.globeRadius,
+        config.globeRadius * 1
+    )
 
     return (
         <orbitControls

@@ -1,5 +1,6 @@
 import React from 'react'
 import GlobeCanvas from '../../components/GlobeCanvas'
+import Visualization from '../../components/Visualization'
 import './App.css'
 
 const App = () => (
@@ -7,7 +8,9 @@ const App = () => (
         <div className='canvas-container'>
             <GlobeCanvas />
         </div>
-        <div className='visualization-container'></div>
+        <div className='visualization-container'>
+            <Visualization />
+        </div>
     </div>
 )
 
