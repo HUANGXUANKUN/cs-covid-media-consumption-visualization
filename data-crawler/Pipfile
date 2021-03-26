@@ -7,8 +7,8 @@ verify_ssl = true
 python-dotenv = "*"
 
 [packages]
-scrapy = "2.4.1"
-spotipy = "2.17.1"
+scrapy = "*"
+spotipy = "*"
 
 [requires]
 python_version = "3.8"

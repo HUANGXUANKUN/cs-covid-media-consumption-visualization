@@ -11,8 +11,8 @@ REGION_SELECT_VALUES = ["global", "us", "gb", "ad", "ae", "ar", "at", "au", "be"
                         "ni", "nl", "no", "nz", "pa", "pe", "ph", "pl", "pt", "py", "ro", "ru", "sa", "se", "sg", "sk",
                         "sv", "th", "tr", "tw", "ua", "uy", "vn", "za"]
 
-START_DATE = datetime(2020, 1, 1)
-DAYS_LENGTH = 366
+START_DATE = datetime(2019, 1, 1)
+DAYS_LENGTH = 366 + 365
 DATE_FORMATTER = "%Y-%m-%d"
 SELECT_TOP = 10
 

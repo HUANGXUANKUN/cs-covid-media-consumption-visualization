@@ -26,8 +26,8 @@ class ChartSpider(scrapy.Spider):
             loader.add_value("date", url_split[-1])
             track_link = chart_selector.css(".chart-table-image a::attr(href)").get()
             track_id = track_link.split("/")[-1]
-            loader.add_value("track_id", track_id)
-            loader.add_css("track_name", ".chart-table-track strong::text", TakeFirst())
+            loader.add_value("id", track_id)
+            loader.add_css("name", ".chart-table-track strong::text", TakeFirst())
             loader.add_css("artists", ".chart-table-track span::text", TakeFirst(), re="by (.*)")
             loader.add_css("position", ".chart-table-position::text", TakeFirst(), lambda rank: int(rank))
             loader.add_css("streams_count", ".chart-table-streams::text", TakeFirst(),
@@ -35,8 +35,12 @@ class ChartSpider(scrapy.Spider):
             track_ids.append(track_id)
             loaders.append(loader)
 
-        for loader, audio_feature in zip(loaders, spotify.audio_features(track_ids)):
+        for loader, audio_feature, track_info in zip(loaders,
+                                                     spotify.audio_features(track_ids),
+                                                     spotify.tracks(track_ids)["tracks"]):
             loader.add_value("audio_features", audio_feature)
+            loader.add_value("duration", track_info["duration_ms"])
+            loader.add_value("release_date", track_info["album"]["release_date"])
             yield loader.load_item()
 
         days = response.meta.get("days", 0)
