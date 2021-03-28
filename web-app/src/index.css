@@ -4,6 +4,11 @@
 @tailwind utilities;
 /* stylelint-enable */
 
+:root {
+    --radar-plot-circle: #a8a8a8;
+    --radar-plot-circle-stroke: #c7c7c733;
+}
+
 html,
 body,
 #root {
