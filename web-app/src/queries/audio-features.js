@@ -2,14 +2,29 @@ import lodash from 'lodash'
 import { getCountryChartData } from './chart-data'
 
 const AUDIO_FEATURES_TO_CALCULATE = [
+    // 'instrumentalness',
+    // 'liveness',
     'danceability',
     'energy',
-    // 'speechiness',
     'acousticness',
-    // 'instrumentalness',
-    'liveness',
+    'speechiness',
     'valence',
 ]
+
+/**
+ * https://gist.github.com/stekhn/a12ed417e91f90ecec14bcfa4c2ae16a
+ */
+const weightedMean = (arrValues, arrWeights) => {
+    const result = arrValues
+        .map((value, i) => {
+            const weight = arrWeights[i]
+            const sum = value * weight
+
+            return [sum, weight]
+        })
+        .reduce((p, c) => [p[0] + c[0], p[1] + c[1]], [0, 0])
+    return result[0] / result[1]
+}
 
 /**
  * Helper function to retrieve daily weighted audio features for a given country
@@ -19,15 +34,19 @@ const AUDIO_FEATURES_TO_CALCULATE = [
 export const getDailyWeightedAudioFeatures = async (countryCode) => {
     const chartData = await getCountryChartData(countryCode)
     const chartDataDateGroup = lodash.groupBy(chartData, 'date')
-    return lodash.mapValues(chartDataDateGroup, (group) =>
-        AUDIO_FEATURES_TO_CALCULATE.reduce(
+    return lodash.mapValues(chartDataDateGroup, (group) => {
+        const streamCounts = lodash.map(group, 'streams_count')
+        return AUDIO_FEATURES_TO_CALCULATE.reduce(
             (prev, curr) =>
                 Object.assign(prev, {
-                    [curr]: lodash.meanBy(group, `audio_features.${curr}`),
+                    [curr]: weightedMean(
+                        lodash.map(group, `audio_features.${curr}`),
+                        streamCounts
+                    ),
                 }),
             {}
         )
-    )
+    })
 }
 
 /**

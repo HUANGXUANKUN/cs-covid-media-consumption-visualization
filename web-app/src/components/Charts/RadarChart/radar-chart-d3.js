@@ -38,8 +38,7 @@ export default function RadarChart(
         /**
          * Tailwind CSS related specs
          */
-        legendClassName:
-            'font-bold uppercase inline-block text-base text-2xl sm:text-lg',
+        legendClassName: 'font-bold uppercase inline-block text-base text-2xl',
         tooltipClassName: 'font-bold text-base',
         svgClassName: '',
     }
@@ -220,22 +219,22 @@ export default function RadarChart(
         .style('fill', (data) => defaultConfig.color(data))
         .style('fill-opacity', defaultConfig.opacityArea)
         .style('transition', '.7s')
-        .on('mouseover', function onMouseOver() {
-            d3.selectAll('.radar-area')
-                .transition()
-                .duration(200)
-                .style('fill-opacity', 0.1)
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .style('fill-opacity', 0.7)
-        })
-        .on('mouseout', () => {
-            d3.selectAll('.radar-area')
-                .transition()
-                .duration(200)
-                .style('fill-opacity', defaultConfig.opacityArea)
-        })
+    // .on('mouseover', function onMouseOver() {
+    //     d3.selectAll('.radar-area')
+    //         .transition()
+    //         .duration(200)
+    //         .style('fill-opacity', 0.1)
+    //     d3.select(this)
+    //         .transition()
+    //         .duration(200)
+    //         .style('fill-opacity', 0.7)
+    // })
+    // .on('mouseout', () => {
+    //     d3.selectAll('.radar-area')
+    //         .transition()
+    //         .duration(200)
+    //         .style('fill-opacity', defaultConfig.opacityArea)
+    // })
 
     // Create the outlines
     blobWrapper
@@ -315,7 +314,7 @@ export default function RadarChart(
         )
         .style('fill', 'none')
         .style('pointer-events', 'all')
-        .on('mouseover', function onMouseOver(data) {
+        .on('mouseover', function onMouseOver(e, data) {
             const newX = parseFloat(d3.select(this).attr('cx')) - 10
             const newY = parseFloat(d3.select(this).attr('cy')) - 10
             d3.select('.tooltip')
