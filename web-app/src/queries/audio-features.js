@@ -1,4 +1,5 @@
 import lodash from 'lodash'
+import moment from 'moment'
 import { getCountryChartData } from './chart-data'
 
 const AUDIO_FEATURES_TO_CALCULATE = [
@@ -60,4 +61,32 @@ export const getWeightedAudioFeaturesComparison = async (countryCode, date) => {
     return [date, yearBeforeDate]
         .map((d) => d.format('YYYY-MM-DD'))
         .map((key) => audioFeatures[key])
+}
+
+/**
+ * Helper function to retrieve YoY change of a given audio feature
+ * @param {keyof typeof import('../data/country-name-map.json')} countryCode
+ * @param {'danceability' | 'energy' | 'acousticness' | 'speechiness' | 'valence'} featureName
+ * @param {import('moment').Moment} startDate
+ * @param {import('moment').Moment} endDate
+ */
+export const getAudioFeatureYoYChangeSeries = async (
+    countryCode,
+    featureName,
+    startDate = moment(new Date(2020, 0, 1)),
+    endDate = moment(new Date(2021, 0, 1))
+) => {
+    const series = {}
+    const audioFeatures = await getDailyWeightedAudioFeatures(countryCode)
+    for (let start = startDate.clone(); start <= endDate; ) {
+        const dateYearBefore = start.clone().add(-1, 'year')
+        const rawFeature = [start, dateYearBefore]
+            .map((d) => d.format('YYYY-MM-DD'))
+            .map((key) => audioFeatures[key])
+            .map((data) => data[featureName])
+        series[start.unix()] =
+            ((rawFeature[0] - rawFeature[1]) / rawFeature[1]) * 100
+        start.add(1, 'day')
+    }
+    return series
 }

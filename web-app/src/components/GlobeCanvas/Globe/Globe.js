@@ -61,7 +61,7 @@ const Dots = () => {
     )
 }
 
-const CountryDots = () => {
+const CountryDots = ({ onClick }) => {
     const ref = useRef()
     const [renderedTooltips, setRenderedTooltips] = useState({})
     const [clickedTooltips, setClickedTooltips] = useState({})
@@ -128,11 +128,12 @@ const CountryDots = () => {
             ref={ref}
             args={[null, null, positions.length]}
             onClick={({ instanceId, clientX, clientY }) => {
-                handleMouseIn(instanceId, clientX, clientY, true)
-                setClickedTooltips((prev) => ({
-                    ...prev,
-                    [instanceId]: true,
-                }))
+                // handleMouseIn(instanceId, clientX, clientY, true)
+                // setClickedTooltips((prev) => ({
+                //     ...prev,
+                //     [instanceId]: true,
+                // }))
+                onClick(positions[instanceId])
             }}
             onPointerOver={({ instanceId, clientX, clientY }) => {
                 handleMouseIn(instanceId, clientX, clientY)
@@ -144,16 +145,16 @@ const CountryDots = () => {
                 handleMouseOut(instanceId)
             }}
         >
-            <icosahedronBufferGeometry args={[2.5, 1, 1]} />
+            <icosahedronBufferGeometry args={[3, 1, 1]} />
             <meshBasicMaterial transparent color='#1DB954' opacity={0.5} />
         </instancedMesh>
     )
 }
 
-const Globe = () => (
+const Globe = ({ onClickCountry }) => (
     <>
         <Dots />
-        <CountryDots />
+        <CountryDots onClick={onClickCountry} />
     </>
 )
 

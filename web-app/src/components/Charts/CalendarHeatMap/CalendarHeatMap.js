@@ -1,0 +1,35 @@
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
+import * as CalHeatMap from 'cal-heatmap'
+
+const CalendarHeatMap = ({ startDate, currentDate, data }) => {
+    const calRef = useRef()
+
+    useEffect(() => {
+        calRef.current.update(data)
+    }, [data])
+
+    useEffect(() => {
+        calRef.current.highlight(currentDate)
+    }, [currentDate])
+
+    useLayoutEffect(() => {
+        const cal = new CalHeatMap()
+        cal.init({
+            itemSelector: '#calendar-heatmap',
+            domain: 'month',
+            cellSize: 9,
+            start: startDate,
+            highlight: currentDate,
+            range: 12,
+            displayLegend: false,
+            considerMissingDataAsZero: true,
+            legendColors: ['#e5e5e5', 'green'],
+            data,
+        })
+        calRef.current = cal
+    }, [])
+
+    return <div id='calendar-heatmap'></div>
+}
+
+export default CalendarHeatMap
