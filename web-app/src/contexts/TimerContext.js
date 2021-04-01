@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import * as moment from 'moment'
+import PropTypes from 'prop-types'
 
 const configuration = {
     startDate: new Date(2020, 0, 1),
@@ -44,6 +45,10 @@ export const TimerContextWrapper = ({ children }) => {
             {children}
         </TimerContext.Provider>
     )
+}
+
+TimerContextWrapper.propTypes = {
+    children: PropTypes.node.isRequired,
 }
 
 export default TimerContext

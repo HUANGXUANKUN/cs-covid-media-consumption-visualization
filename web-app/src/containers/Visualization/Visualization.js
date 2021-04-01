@@ -38,14 +38,14 @@ const Visualization = () => {
     }, [visualizationContext.state, timerContext.currentDate])
 
     return (
-        <div className='bg-white p-6 rounded flex flex-col justify-center'>
+        <div className='bg-white p-6 rounded flex flex-col justify-center items-center'>
             <CalendarHeatMap
                 startDate={new Date(2020, 0, 1)}
                 data={heatMapData}
                 currentDate={timerContext.currentDate.toDate()}
             />
             {data.length > 0 && (
-                <div className='flex justify-around items-center h-auto'>
+                <div className='m-2 flex justify-around items-center h-auto'>
                     <RadarChart
                         round
                         level={3}

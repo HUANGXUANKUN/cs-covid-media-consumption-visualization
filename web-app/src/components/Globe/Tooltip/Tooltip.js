@@ -1,6 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 
+/**
+ * Helper method to create new tooltip component
+ * @param {{ x: number, y: number, props: Record<string, any> }}
+ */
 export const appendNewTooltip = ({ x, y, props }) => {
     const id = `tooltip-${props.key}`
     let container = document.getElementById(id)
@@ -20,6 +25,9 @@ export const appendNewTooltip = ({ x, y, props }) => {
     return container
 }
 
+/**
+ * Tooltip component
+ */
 const Tooltip = ({ position, data, clicked, handleClose }) => (
     <div
         className='p-2 rounded-sm bg-white shadow z-50 relative'
@@ -53,5 +61,18 @@ const Tooltip = ({ position, data, clicked, handleClose }) => (
         <h3>Visualization for {data.country}</h3>
     </div>
 )
+
+Tooltip.propTypes = {
+    position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
+        .isRequired,
+    data: PropTypes.shape({ country: PropTypes.string }).isRequired,
+    clicked: PropTypes.bool,
+    handleClose: PropTypes.func,
+}
+
+Tooltip.defaultProps = {
+    clicked: false,
+    handleClose: () => {},
+}
 
 export default Tooltip

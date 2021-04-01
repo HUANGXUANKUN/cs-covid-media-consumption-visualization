@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react'
+import PropTypes from 'prop-types'
 
 const configuration = {
     defaultRegion: 'global',
@@ -31,6 +32,10 @@ export const VisualizationContextWrapper = ({ children }) => {
             {children}
         </VisualizationContext.Provider>
     )
+}
+
+VisualizationContextWrapper.propTypes = {
+    children: PropTypes.node.isRequired,
 }
 
 export default VisualizationContext

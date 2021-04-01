@@ -1,6 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import * as CalHeatMap from 'cal-heatmap'
+import PropTypes from 'prop-types'
 
+/**
+ * Calendar heatmap component
+ */
 const CalendarHeatMap = ({ startDate, currentDate, data }) => {
     const calRef = useRef()
 
@@ -29,7 +33,13 @@ const CalendarHeatMap = ({ startDate, currentDate, data }) => {
         calRef.current = cal
     }, [])
 
-    return <div id='calendar-heatmap'></div>
+    return <div id='calendar-heatmap' className='overflow-x-auto m-2'></div>
+}
+
+CalendarHeatMap.propTypes = {
+    startDate: PropTypes.instanceOf(Date).isRequired,
+    currentDate: PropTypes.instanceOf(Date).isRequired,
+    data: PropTypes.object.isRequired,
 }
 
 export default CalendarHeatMap

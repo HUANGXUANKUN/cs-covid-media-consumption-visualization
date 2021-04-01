@@ -5,6 +5,9 @@ import config from '../Globe/config'
 
 extend({ OrbitControls })
 
+/**
+ * 3D orbit control component
+ */
 const CameraControls = () => {
     const {
         camera,

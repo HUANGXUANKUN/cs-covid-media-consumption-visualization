@@ -1,12 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import moment from 'moment'
 
 /**
  * Time picker component
  */
 const TimePicker = ({ currentDate }) => (
-    <div className='bg-white shadow rounded-sm p-2'>
-        {currentDate.format('YYYY-MM-DD')}
-    </div>
+    <span>{currentDate.format('YYYY-MM-DD')}</span>
 )
+
+TimePicker.propTypes = {
+    currentDate: PropTypes.objectOf(moment),
+}
 
 export default TimePicker

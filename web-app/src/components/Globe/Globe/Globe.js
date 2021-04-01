@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { useFrame } from 'react-three-fiber'
+import PropTypes from 'prop-types'
 import GLOBE_POINTS from './points.json'
 import COUNTRY_POINTS from './countries.json'
 import config from './config'
@@ -27,6 +28,9 @@ const convertFlatCoordsToSphereCoords = (latitude, longitude) => {
     }
 }
 
+/**
+ * Globe dot mesh component
+ */
 const Dots = () => {
     const ref = useRef()
 
@@ -61,6 +65,9 @@ const Dots = () => {
     )
 }
 
+/**
+ * Country geo-location dot mesh component
+ */
 const CountryDots = ({ onClick }) => {
     const ref = useRef()
     const [renderedTooltips, setRenderedTooltips] = useState({})
@@ -127,7 +134,7 @@ const CountryDots = ({ onClick }) => {
         <instancedMesh
             ref={ref}
             args={[null, null, positions.length]}
-            onClick={({ instanceId, clientX, clientY }) => {
+            onClick={({ instanceId }) => {
                 // handleMouseIn(instanceId, clientX, clientY, true)
                 // setClickedTooltips((prev) => ({
                 //     ...prev,
@@ -151,11 +158,26 @@ const CountryDots = ({ onClick }) => {
     )
 }
 
+CountryDots.propTypes = {
+    onClick: PropTypes.func,
+}
+
+CountryDots.defaultProps = {
+    onClick: () => {},
+}
+
+/**
+ * Dot mesh combination component
+ */
 const Globe = ({ onClickCountry }) => (
     <>
         <Dots />
         <CountryDots onClick={onClickCountry} />
     </>
 )
+
+Globe.propTypes = {
+    onClickCountry: PropTypes.func.isRequired,
+}
 
 export default Globe
