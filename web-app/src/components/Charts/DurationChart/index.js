@@ -1,50 +1,41 @@
-// Can try serving the html to see the outcome
-
-const margin = {top:60, right:60, bottom:60, left:60},
-width = 900 - margin.left - margin.right,
-height = 300 - margin.top - margin.bottom
-
+// import * as d3 from 'd3'
+const margin = {top:60, right:60, bottom:60, left:60}
+const width = 900 - margin.left - margin.right
+const height = 300 - margin.top - margin.bottom
 const histHeight = 100
 const plotHeight = 200
 const parseDate = d3.timeParse('%Y-%m-%d-%H')
-// const formatMonth = d3.timeFormat('%Y-%m-%d')
 const formatMonth = d3.timeFormat('%b')
-
-
-
 const startDate = new Date('2019-01-01 00:00:00')
 const endDate = new Date('2020-12-30 00::00:00')
 const dateArray = d3.timeMonths(startDate, endDate)
 
 
 d3.json("../../../data/chart-by-country/ar.json", function(error, data){
-  let daily_data = generate_daily(data);
-  console.log(daily_data);
-  let month_data = generate_month(daily_data);
-  console.log(month_data);
-
-  // let day_min = d3.min(daily_data, d => d.duration)
-  // let day_max = d3.max(daily_data, d => d.duration)
+  let dailyData = generateDaily(data);
+  console.log(dailyData);
+  let monthData = generateMonth(dailyData);
+  console.log(monthData);
 
   const weekScale = d3.scaleLinear()
     .domain([0, 4])
     .range([0, plotHeight])
   const rScale = d3.scaleLinear()
-    .domain([d3.min(month_data, d => d.duration), d3.max(month_data, d => d.duration)])
+    .domain([d3.min(monthData, d => d.duration), d3.max(monthData, d => d.duration)])
     .range([3, plotHeight / 12])
 
 
   const x = d3.scaleTime()
-    .domain([d3.min(daily_data, d => d.date), d3.max(daily_data, d => d.date)])
+    .domain([d3.min(dailyData, d => d.date), d3.max(dailyData, d => d.date)])
     .range([0, width])
     .clamp(true)
 
   const y = d3.scaleLinear()
-    .domain([d3.min(daily_data, d => d.duration), d3.max(daily_data, d => d.duration)])
+    .domain([d3.min(dailyData, d => d.duration), d3.max(dailyData, d => d.duration)])
     .range([histHeight, 0])
 
   const colors = d3.scaleQuantize()
-    .domain([d3.min(daily_data, d => d.duration), d3.max(daily_data, d => d.duration)])
+    .domain([d3.min(dailyData, d => d.duration), d3.max(dailyData, d => d.duration)])
     .range(["#9E0142", "#D53E4F", "#F46D43", "#FDAE61", "#FEE08B", "#E6F598", "#ABDDA4", "#66C2A5", "#3288BD", "#5E4FA2", "#74C67A", "#99D492", "#BFE1B0", "#DEEDCF"]);
 
   const dailyYAxis = d3.axisLeft(y).ticks(5);
@@ -74,18 +65,8 @@ d3.json("../../../data/chart-by-country/ar.json", function(error, data){
     .attr('transform', `translate(${margin.left - 15}, ${margin.top + histHeight + 50})`)
     .call(weeklyYAxis)
 
-  // svg.append("text")
-  //   // .attr("transform", "rotate(-90)")
-  //   .attr("y", histHeight + margin.top + 40)
-  //   .attr("x", 15)
-  //   .attr("dy", "1em")
-  //   .style("text-anchor", "middle")
-  //   .text("Week");  
-
-
-
-  drawHistogram(daily_data)
-  drawPlot(month_data)
+  drawHistogram(dailyData)
+  drawPlot(monthData)
   drawSlider()
 
   function drawHistogram(data) {
@@ -171,7 +152,7 @@ d3.json("../../../data/chart-by-country/ar.json", function(error, data){
     const h = x.invert(d3.event.x)
     handle.attr('cx', x(h))
   
-    const newData = month_data.filter(d => d.date < h)
+    const newData = monthData.filter(d => d.date < h)
     drawPlot(newData)
   
     // console.log(h);
@@ -183,37 +164,37 @@ d3.json("../../../data/chart-by-country/ar.json", function(error, data){
   
 });
 
-function generate_daily(dataset) {
+function generateDaily(dataset) {
   let data = [];
   let sum = 0;
-  let prev_date = dataset[0].date;
+  let prevDate = dataset[0].date;
   for (i = 0; i < dataset.length; i += 1) {
-    if (dataset[i].date == prev_date) {
+    if (dataset[i].date === prevDate) {
       sum += dataset[i].duration * dataset[i].streams_count / 3600000;
     } else {
-      data.push({'date': parseDate(prev_date+'-0'), 'duration': sum});
+      data.push({'date': parseDate(prevDate+'-0'), 'duration': sum});
       sum = 0
-      prev_date = dataset[i].date;
+      prevDate = dataset[i].date;
     }
   }
   return data;
 }
 // [{duration: x, week: 4, month: Date},]
-function generate_month(dataset) {
-  let data = [], week_count = 0, sum = 0, cur_month = dataset[0].date;
-  // console.log(cur_month);
+function generateMonth(dataset) {
+  let data = [], weekCount = 0, sum = 0, curMonth = dataset[0].date;
+  // console.log(curMonth);
   for(i = 0; i < dataset.length; i+=1) {
-    if (cur_month.getMonth() != dataset[i].date.getMonth()) {
-      cur_month = dataset[i].date;
-      week_count = 0;
+    if (curMonth.getMonth() !== dataset[i].date.getMonth()) {
+      curMonth = dataset[i].date;
+      weekCount = 0;
     }  
 
-    if (dataset[i].date.getDay() != 6) {
+    if (dataset[i].date.getDay() !== 6) {
       sum += dataset[i].duration;
     } else {
-      data.push({'duration':sum, 'week': week_count, 'date': cur_month});
+      data.push({'duration':sum, 'week': weekCount, 'date': curMonth});
       sum = 0;
-      week_count += 1;
+      weekCount += 1;
     }
   }
   return data;
