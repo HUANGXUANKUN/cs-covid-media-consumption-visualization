@@ -73,6 +73,7 @@ export const getWeightedAudioFeaturesComparison = async (countryCode, date) => {
 export const getAudioFeatureYoYChangeSeries = async (
     countryCode,
     featureName,
+    reverse = false,
     startDate = moment(new Date(2020, 0, 1)),
     endDate = moment(new Date(2021, 0, 1))
 ) => {
@@ -85,7 +86,9 @@ export const getAudioFeatureYoYChangeSeries = async (
             .map((key) => audioFeatures[key])
             .map((data) => data[featureName])
         series[start.unix()] =
-            ((rawFeature[0] - rawFeature[1]) / rawFeature[1]) * 100
+            ((rawFeature[0] - rawFeature[1]) / rawFeature[1]) *
+            100 *
+            (reverse ? -1 : 1)
         start.add(1, 'day')
     }
     return series

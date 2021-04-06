@@ -52,3 +52,11 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
 }
+
+.react-component {
+    width: 100%;
+}
+
+.full-width-child > * {
+    width: 100%;
+}
