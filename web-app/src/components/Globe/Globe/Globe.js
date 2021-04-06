@@ -68,12 +68,16 @@ const Dots = () => {
 /**
  * Country geo-location dot mesh component
  */
-const CountryDots = ({ onClick }) => {
+const CountryDots = ({ onClick, countries }) => {
     const ref = useRef()
     const [renderedTooltips, setRenderedTooltips] = useState({})
     const [clickedTooltips, setClickedTooltips] = useState({})
 
-    const positions = useMemo(() => COUNTRY_POINTS, [COUNTRY_POINTS])
+    const positions = useMemo(
+        () =>
+            COUNTRY_POINTS.filter((point) => countries.includes(point.country)),
+        [countries]
+    )
 
     useLayoutEffect(() => {
         positions.forEach((position, index) => {
@@ -160,24 +164,27 @@ const CountryDots = ({ onClick }) => {
 
 CountryDots.propTypes = {
     onClick: PropTypes.func,
+    countries: PropTypes.arrayOf(PropTypes.string),
 }
 
 CountryDots.defaultProps = {
     onClick: () => {},
+    countries: COUNTRY_POINTS.map((point) => point.country),
 }
 
 /**
  * Dot mesh combination component
  */
-const Globe = ({ onClickCountry }) => (
+const Globe = ({ onClickCountry, includeCountries }) => (
     <>
         <Dots />
-        <CountryDots onClick={onClickCountry} />
+        <CountryDots onClick={onClickCountry} countries={includeCountries} />
     </>
 )
 
 Globe.propTypes = {
     onClickCountry: PropTypes.func.isRequired,
+    includeCountries: PropTypes.arrayOf(PropTypes.string),
 }
 
 export default Globe

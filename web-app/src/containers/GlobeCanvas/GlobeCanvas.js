@@ -67,6 +67,7 @@ const GlobeCanvas = () => (
                                 data: event.country,
                             })
                         }
+                        includeCountries={context.state.availableRegions}
                     />
                 )}
             </VisualizationContext.Consumer>
