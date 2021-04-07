@@ -29,6 +29,7 @@ export default () => {
                     pandemic, as a baseline for our visualization of Spotify
                     usage data to demonstrate the correlation between a specifc
                     query and how the disease evolved in a specific region.`}
+            headingStyle='bg-yellow-600'
         >
             <TrendChart
                 data={covidData}

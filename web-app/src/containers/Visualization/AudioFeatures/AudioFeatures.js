@@ -8,10 +8,19 @@ import {
     getWeightedAudioFeaturesComparison,
 } from '../../../queries/audio-features'
 import { transformCountryCodeToFullName } from '../../../queries/region'
+
+const TOGGLABLE_FEATURE_NAMES = [
+    { key: 'valence', name: 'Valence' },
+    { key: 'energy', name: 'Energy' },
+    { key: 'danceability', name: 'Danceability' },
+]
 export default () => {
     const timerContext = useContext(TimerContext)
     const visualizationContext = useContext(VisualizationContext)
 
+    const [selectedFeature, setSelectedFeature] = useState(
+        TOGGLABLE_FEATURE_NAMES[0]
+    )
     const [audioFeatureData, setAudioFeatureData] = useState([])
     const [currData, yearBeforeData] = audioFeatureData
     const [heatMapData, setHeatMapData] = useState({})
@@ -19,10 +28,10 @@ export default () => {
     useEffect(() => {
         getAudioFeatureYoYChangeSeries(
             visualizationContext.state.selectedRegion,
-            'valence',
+            selectedFeature.key,
             true
         ).then(setHeatMapData)
-    }, [visualizationContext.state.selectedRegion])
+    }, [visualizationContext.state.selectedRegion, selectedFeature.key])
 
     useEffect(() => {
         getWeightedAudioFeaturesComparison(
@@ -32,7 +41,11 @@ export default () => {
     }, [visualizationContext.state.selectedRegion, timerContext.currentDate])
 
     return (
-        <VisualizationBox heading='h1' headingText='Audio Feature Analysis'>
+        <VisualizationBox
+            heading='h1'
+            headingText='Audio Feature Analysis'
+            subHeadingText='How positive/negative are those top songs in a country?'
+        >
             <VisualizationBox
                 heading='h2'
                 headingText='Calendar Heatmap Based on Year-on-Year Change'
@@ -63,6 +76,29 @@ export default () => {
                     </p>
                 }
             >
+                <div className='mt-2 border-b-2 border-gray-300'>
+                    <ul className='flex cursor-pointer m-auto'>
+                        {TOGGLABLE_FEATURE_NAMES.map((feature) => (
+                            <li
+                                className={`py-1 px-6 bg-white ${
+                                    feature.key !== selectedFeature.key
+                                        ? 'rounded-t-lg text-gray-500 bg-gray-200'
+                                        : ''
+                                }`}
+                            >
+                                <div
+                                    className='focus:outline-none'
+                                    role='button'
+                                    onClick={() => setSelectedFeature(feature)}
+                                    onKeyPress={() => {}}
+                                    tabIndex={0}
+                                >
+                                    {feature.name}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
                 <CalendarHeatMap
                     startDate={new Date(2020, 0, 1)}
                     data={heatMapData}

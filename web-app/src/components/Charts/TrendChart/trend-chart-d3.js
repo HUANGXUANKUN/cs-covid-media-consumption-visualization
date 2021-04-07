@@ -109,7 +109,7 @@ export default function TrendChart(
         .append('clipPath')
         .attr('id', 'selected-region')
         .append('rect')
-        .attr('x', defaultConfig.margin.left)
+        .attr('x', 0)
         .attr('y', 0)
         .attr('width', 0)
         .attr('height', defaultConfig.h + defaultConfig.margin.top)

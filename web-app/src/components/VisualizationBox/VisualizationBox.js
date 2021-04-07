@@ -5,12 +5,15 @@ import PropTypes from 'prop-types'
  * Helper function to get formatted heading class name
  * @param {'h1' | 'h2' | 'h3'} heading
  * @param {string} textContent
+ * @param {string} overrideHeadingStyle
  */
-const getHeading = (heading, textContent) => {
+const getHeading = (heading, textContent, overrideHeadingStyle = '') => {
     switch (heading) {
         case 'h1':
             return (
-                <h1 className='sticky bg-white z-10 pb-2 top-0 font-sans font-bold text-3xl w-full'>
+                <h1
+                    className={`rounded-sm font-sans font-bold text-3xl w-auto inline-block p-2 text-white ${overrideHeadingStyle}`}
+                >
                     {textContent}
                 </h1>
             )
@@ -31,25 +34,38 @@ const getHeading = (heading, textContent) => {
 const VisualizationBox = ({
     heading,
     headingText,
+    subHeadingText,
     children: visualization,
     subtitle,
+    headingStyle,
 }) => (
     <div className='relative mb-2 mt-2 w-full'>
-        {getHeading(heading, headingText)}
+        <header
+            className={`pb-2 ${
+                heading === 'h1' ? 'bg-white sticky z-10 top-0 pt-2' : ''
+            }`}
+        >
+            {getHeading(heading, headingText, headingStyle)}
+            {subHeadingText && (
+                <p className='text-gray-600'>{subHeadingText}</p>
+            )}
+        </header>
         {visualization}
-        {subtitle && (
-            <subtitle className='block font-size mt-2 mb-2'>
-                {subtitle}
-            </subtitle>
-        )}
+        {subtitle && <p className='block font-size mt-2 mb-2'>{subtitle}</p>}
     </div>
 )
 
 VisualizationBox.propTypes = {
     heading: PropTypes.oneOf(['h1', 'h2', 'h3']),
     headingText: PropTypes.string,
+    subHeadingText: PropTypes.string,
     children: PropTypes.node,
-    subtitle: PropTypes.oneOf([PropTypes.string, PropTypes.node]),
+    subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    headingStyle: PropTypes.string,
+}
+
+VisualizationBox.defaultProps = {
+    headingStyle: 'bg-green-600',
 }
 
 export default VisualizationBox

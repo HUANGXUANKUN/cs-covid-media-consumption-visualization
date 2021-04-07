@@ -8,7 +8,7 @@ export const getCountryChartData = (countryCode) => {
     const loader = CHART_DATA_LOADER[countryCode]
     return loader
         .load()
-        .then((data) => data)
+        .then((data) => data.default)
         .catch((error) => {
             // eslint-disable-next-line no-console
             console.error(error)
