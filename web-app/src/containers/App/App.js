@@ -17,11 +17,13 @@ import { transformCountryCodeToFullName } from '../../queries/region'
 const App = () => (
     <TimerContextWrapper>
         <VisualizationContextWrapper>
-            <div className='canvas-container'>
-                <GlobeCanvas />
-            </div>
-            <div className='visualization-container'>
-                <Visualization />
+            <div className='h-full w-full flex items-center justify-around relative'>
+                <div className='canvas-container h-full'>
+                    <GlobeCanvas />
+                </div>
+                <div className='visualization-container h-full bg-white p-6 rounded shadow'>
+                    <Visualization />
+                </div>
             </div>
             <div className='timer-container'>
                 <TimerContext.Consumer>

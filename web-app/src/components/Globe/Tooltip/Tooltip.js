@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import { transformCountryCodeToFullName } from '../../../queries/region'
 
 /**
  * Helper method to create new tooltip component
@@ -58,7 +59,9 @@ const Tooltip = ({ position, data, clicked, handleClose }) => (
                 </svg>
             </button>
         )}
-        <h3>Visualization for {data.country}</h3>
+        <h3>
+            Visualization for {transformCountryCodeToFullName(data.country)}
+        </h3>
     </div>
 )
 
