@@ -1,5 +1,3 @@
-const { whenDev } = require('@craco/craco')
-
 class DynamicChartDataLoaderPlugin {
     apply(compiler) {
         compiler.hooks.watchRun.tap('DynamicChartDataLoaderPlugin', () => {
@@ -19,7 +17,7 @@ module.exports = {
     },
     webpack: {
         plugins: {
-            add: [...whenDev(() => [new DynamicChartDataLoaderPlugin()])],
+            add: [new DynamicChartDataLoaderPlugin()],
         },
     },
     devServer: {
