@@ -63,8 +63,10 @@ const Visualization = () => {
                         data={covidData}
                         dateKey='date'
                         valueKey='confirmed'
-                        className='h-32 w-full'
-                        width={timeSeriesRef.current.clientWidth * 4}
+                        svgClassName='m-auto'
+                        width={750}
+                        height={150}
+                        margin={{ left: 30, right: 20, top: 10, bottom: 20 }}
                         startDate={new Date(2020, 0, 1)}
                         currDate={timerContext.currentDate.toDate()}
                     />

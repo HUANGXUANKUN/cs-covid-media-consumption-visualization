@@ -6,12 +6,14 @@ import * as d3 from 'd3'
  * @param {{ w: number, h: number } | Record<string, string>} options Custom options for plotting
  * @param {string} tag HTML tag name, default as div
  * @param {string} className HTML class name default as trend-chart
+ * @param {string} svgClassName SVG class name default as trend-chart
  */
 export default function TrendChart(
     entries,
     options,
     tag = 'div',
     className = 'trend-chart',
+    svgClassName = '',
     startDate = d3.min(entries, (d) => new Date(d.date)),
     endDate = d3.max(entries, (d) => new Date(d.date))
 ) {
@@ -34,7 +36,7 @@ export default function TrendChart(
          */
         legendClassName: 'font-bold uppercase inline-block text-base text-2xl',
         tooltipClassName: 'font-bold text-base',
-        svgClassName: '',
+        svgClassName,
     }
 
     // Update default configuration with custom plotting options
@@ -63,16 +65,16 @@ export default function TrendChart(
         .select(node)
         .append('svg')
         .attr(
-            'viewBox',
-            `0 0 ${
-                defaultConfig.w +
+            'width',
+            defaultConfig.w +
                 defaultConfig.margin.left +
                 defaultConfig.margin.right
-            } ${
-                defaultConfig.h +
+        )
+        .attr(
+            'height',
+            defaultConfig.h +
                 defaultConfig.margin.top +
                 defaultConfig.margin.bottom
-            }`
         )
         .attr('preserveAspectRatio', 'xMidYMid meet')
         .attr('class', `${className} ${defaultConfig.svgClassName}`)
@@ -107,13 +109,18 @@ export default function TrendChart(
         .append('clipPath')
         .attr('id', 'selected-region')
         .append('rect')
-        .attr('x', 0)
+        .attr('x', defaultConfig.margin.left)
         .attr('y', 0)
         .attr('width', 0)
-        .attr('height', defaultConfig.h)
+        .attr('height', defaultConfig.h + defaultConfig.margin.top)
         .style('transition', '1s')
 
-    const plot = svg.append('g').attr('tranform', `translate(0, 0)`)
+    const plot = svg
+        .append('g')
+        .attr(
+            'transform',
+            `translate(${defaultConfig.margin.left}, ${defaultConfig.margin.top})`
+        )
     const basePlot = plot.append('g')
     const dynamicPlot = plot
         .append('g')
@@ -152,6 +159,38 @@ export default function TrendChart(
         .attr('stroke', 'rgb(101, 115, 139)')
         .attr('stroke-width', 2)
         .style('transition', '1s')
+
+    // Axis
+
+    const timeAxis = d3.axisBottom().scale(timeScale).tickSize(0)
+    const valueAxis = d3
+        .axisLeft()
+        .scale(valueScale)
+        .ticks(5)
+        .tickFormat((d) => d3.format('.2s')(d))
+        .tickSizeOuter(0)
+
+    svg.append('g')
+        .attr(
+            'transform',
+            `translate(${defaultConfig.margin.left}, ${
+                defaultConfig.h + defaultConfig.margin.top
+            })`
+        )
+        .call(timeAxis)
+        .style('color', 'rgb(86, 98, 118)')
+        .style('text-anchor', 'end')
+
+    svg.append('g')
+        .attr(
+            'transform',
+            `translate(${defaultConfig.w + defaultConfig.margin.left}, ${
+                defaultConfig.margin.top
+            })`
+        )
+        .call(valueAxis)
+        .style('color', 'rgb(86, 98, 118)')
+        .style('text-anchor', 'end')
 
     return { node, clipPath, timeScale }
 }

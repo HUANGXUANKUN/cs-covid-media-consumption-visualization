@@ -18,6 +18,7 @@ const TrendChart = ({
     height,
     width,
     className,
+    svgClassName,
     startDate,
     endDate,
     currDate,
@@ -30,21 +31,17 @@ const TrendChart = ({
             {
                 h: height,
                 w: width,
-                margin: {
-                    top: margin,
-                    right: margin,
-                    left: margin,
-                    bottom: margin,
-                },
+                margin,
                 color: d3.scaleOrdinal(colors),
             },
             undefined,
             className,
+            svgClassName,
             startDate,
             endDate
         )
         setNode(plotNode)
-    }, [data, margin, height, width])
+    }, [data, height, width])
 
     useEffect(() => {
         if (node) {
@@ -66,11 +63,17 @@ TrendChart.propTypes = {
      * Class name to be assigned to SVG element
      */
     className: PropTypes.string.isRequired,
+    svgClassName: PropTypes.string.isRequired,
     /**
      * Plot related specs
      */
     colors: PropTypes.arrayOf(PropTypes.string),
-    margin: PropTypes.number,
+    margin: PropTypes.shape({
+        top: PropTypes.number,
+        bottom: PropTypes.number,
+        left: PropTypes.number,
+        right: PropTypes.number,
+    }),
     height: PropTypes.number,
     width: PropTypes.number,
     startDate: PropTypes.objectOf(Date),
