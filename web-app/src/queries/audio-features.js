@@ -30,7 +30,7 @@ const weightedMean = (arrValues, arrWeights) => {
 /**
  * Helper function to retrieve daily weighted audio features for a given country
  * Sample output: { '2019-01-01': { valence: 0.5152 } }
- * @param {keyof typeof import('../data/country-name-map.json')} countryCode
+ * @param {keyof typeof import('../data/chart/region-code-map.json')} countryCode
  */
 export const getDailyWeightedAudioFeatures = async (countryCode) => {
     const chartData = await getCountryChartData(countryCode)

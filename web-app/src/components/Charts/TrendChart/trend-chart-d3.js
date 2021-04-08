@@ -83,7 +83,7 @@ export default function TrendChart(
     const timeScale = d3
         .scaleTime()
         .domain([startDate, endDate])
-        .range([0, defaultConfig.w])
+        .range([0, defaultConfig.w - defaultConfig.margin.right])
 
     const valueScale = d3
         .scaleLinear()
@@ -166,7 +166,7 @@ export default function TrendChart(
     const valueAxis = d3
         .axisLeft()
         .scale(valueScale)
-        .ticks(5)
+        .ticks(3)
         .tickFormat((d) => d3.format('.2s')(d))
         .tickSizeOuter(0)
 
@@ -184,9 +184,7 @@ export default function TrendChart(
     svg.append('g')
         .attr(
             'transform',
-            `translate(${defaultConfig.w + defaultConfig.margin.left}, ${
-                defaultConfig.margin.top
-            })`
+            `translate(${defaultConfig.w + 10}, ${defaultConfig.margin.top})`
         )
         .call(valueAxis)
         .style('color', 'rgb(86, 98, 118)')

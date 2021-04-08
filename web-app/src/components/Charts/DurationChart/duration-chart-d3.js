@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import * as lodash from 'lodash'
 
 export default function DurationChart(
     data,
@@ -55,7 +56,9 @@ export default function DurationChart(
         return result
     }
 
-    const dailyData = generateDaily(data)
+    const dailyData = generateDaily(
+        lodash.sortBy(data, (o) => new Date(o.date))
+    )
     const monthData = generateMonth(dailyData)
 
     const weekScale = d3.scaleLinear().domain([0, 4]).range([0, chartHeight])

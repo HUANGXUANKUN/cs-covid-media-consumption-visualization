@@ -44,7 +44,7 @@ const TrendChart = ({
     }, [data, height, width])
 
     useEffect(() => {
-        if (node) {
+        if (node && !Number.isNaN(node.timeScale(currDate))) {
             node.clipPath.attr('width', node.timeScale(currDate))
         }
     }, [node, currDate])

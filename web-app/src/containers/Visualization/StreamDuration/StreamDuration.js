@@ -21,9 +21,10 @@ export default () => {
         <VisualizationBox
             heading='h1'
             headingText='Stream Duration Trend'
+            headingId='stream-duration'
             subHeadingText='How much time is spent on streaming those top songs?'
             subtitle={
-                <p>
+                <>
                     The bar chart and bubble chart show the overall trend of
                     cumulative streaming duration in{' '}
                     {transformCountryCodeToFullName(
@@ -41,7 +42,7 @@ export default () => {
                     A rise in COVID-19 cases may come with increasing streaming
                     duration or decreasing one, depending on the selected
                     country.
-                </p>
+                </>
             }
         >
             {chartData.length > 0 && (

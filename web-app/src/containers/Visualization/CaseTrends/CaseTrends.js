@@ -4,18 +4,27 @@ import { loadCovidCountryData } from '../../../queries/covid-data'
 import VisualizationBox from '../../../components/VisualizationBox'
 import TrendChart from '../../../components/Charts/TrendChart'
 import { transformCountryCodeToFullName } from '../../../queries/region'
+import TabGroup from '../../../components/TabGroup/TabGroup'
+
+const DATA_TYPES = [
+    { key: 'confirmed', name: 'Confirmed' },
+    { key: 'recovered', name: 'Recovered' },
+    { key: 'death', name: 'Death' },
+]
 
 export default () => {
     const timerContext = useContext(TimerContext)
     const visualizationContext = useContext(VisualizationContext)
     const [covidData, setCovidData] = useState([])
+    const [selectedType, setSelectedType] = useState(DATA_TYPES[0])
 
     useEffect(() => {
         loadCovidCountryData(
             visualizationContext.state.selectedRegion,
-            'confirmed'
+            selectedType.key
         ).then(setCovidData)
-    }, [visualizationContext.state.selectedRegion])
+    }, [visualizationContext.state.selectedRegion, selectedType])
+
     return (
         <VisualizationBox
             heading='h1'
@@ -31,6 +40,11 @@ export default () => {
                     query and how the disease evolved in a specific region.`}
             headingStyle='bg-yellow-600'
         >
+            <TabGroup
+                group={DATA_TYPES}
+                selected={selectedType}
+                onClick={setSelectedType}
+            />
             <TrendChart
                 data={covidData}
                 dateKey='date'

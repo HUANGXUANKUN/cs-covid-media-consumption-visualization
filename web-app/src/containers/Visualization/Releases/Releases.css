@@ -1,0 +1,30 @@
+.release-chart-svg {
+    display: block;
+    height: 220px;
+    background: #f7f7f7;
+    overflow: visible;
+}
+
+.release-sub-chart-svg {
+    display: block;
+    height: 250px;
+    background: #f7f7f7;
+    overflow: visible;
+}
+
+.release-graph-container svg rect.selection {
+    stroke: none;
+}
+
+.brush-tooltip-area {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 50px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}

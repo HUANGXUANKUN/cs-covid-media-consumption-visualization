@@ -7,11 +7,12 @@ import PropTypes from 'prop-types'
  * @param {string} textContent
  * @param {string} overrideHeadingStyle
  */
-const getHeading = (heading, textContent, overrideHeadingStyle = '') => {
+const getHeading = (heading, id, textContent, overrideHeadingStyle = '') => {
     switch (heading) {
         case 'h1':
             return (
                 <h1
+                    id={id}
                     className={`rounded-sm font-sans font-bold text-3xl w-auto inline-block p-2 text-white ${overrideHeadingStyle}`}
                 >
                     {textContent}
@@ -19,7 +20,7 @@ const getHeading = (heading, textContent, overrideHeadingStyle = '') => {
             )
         case 'h2':
             return (
-                <h2 className='font-sans font-semibold text-xl w-full'>
+                <h2 id={id} className='font-sans font-semibold text-xl w-full'>
                     {textContent}
                 </h2>
             )
@@ -34,6 +35,7 @@ const getHeading = (heading, textContent, overrideHeadingStyle = '') => {
 const VisualizationBox = ({
     heading,
     headingText,
+    headingId,
     subHeadingText,
     children: visualization,
     subtitle,
@@ -45,7 +47,7 @@ const VisualizationBox = ({
                 heading === 'h1' ? 'bg-white sticky z-10 top-0 pt-2' : ''
             }`}
         >
-            {getHeading(heading, headingText, headingStyle)}
+            {getHeading(heading, headingId, headingText, headingStyle)}
             {subHeadingText && (
                 <p className='text-gray-600'>{subHeadingText}</p>
             )}
@@ -58,6 +60,7 @@ const VisualizationBox = ({
 VisualizationBox.propTypes = {
     heading: PropTypes.oneOf(['h1', 'h2', 'h3']),
     headingText: PropTypes.string,
+    headingId: PropTypes.string,
     subHeadingText: PropTypes.string,
     children: PropTypes.node,
     subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
