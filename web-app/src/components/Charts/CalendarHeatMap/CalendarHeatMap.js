@@ -27,6 +27,10 @@ const CalendarHeatMap = ({ startDate, currentDate, data, color }) => {
             range: 12,
             displayLegend: true,
             legendVerticalPosition: 'top',
+            subDomainTitleFormat: {
+                empty: 'No negative change on {data}',
+                filled: '{count}% negative change in feature on {date}',
+            },
             considerMissingDataAsZero: true,
             legendColors: ['#e5e5e5', color],
             data,

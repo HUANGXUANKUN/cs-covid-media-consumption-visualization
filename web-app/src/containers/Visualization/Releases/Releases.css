@@ -1,14 +1,12 @@
 .release-chart-svg {
     display: block;
     height: 220px;
-    background: #f7f7f7;
     overflow: visible;
 }
 
 .release-sub-chart-svg {
     display: block;
     height: 250px;
-    background: #f7f7f7;
     overflow: visible;
 }
 
