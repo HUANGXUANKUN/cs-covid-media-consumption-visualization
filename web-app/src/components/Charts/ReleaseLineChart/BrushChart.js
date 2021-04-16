@@ -146,6 +146,13 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
             .attr('transform', `translate(${margin}, 0)`)
             .call(yAxis)
 
+        svg.append('text')
+            .attr('text-anchor', 'end')
+            .style('font-size', '10px')
+            .attr('x', margin + 90)
+            .attr('y', margin - 10)
+            .text('Number of Songs')
+
         const brush = brushX()
             .extent([
                 [0, 0],
