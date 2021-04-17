@@ -127,7 +127,9 @@ function SubBrushChart({ data, selection, id = 'myClipPath' }) {
             .duration(300)
             .call(yAxis)
 
+        svg.select('.unit').remove()
         svg.append('text')
+            .attr('class', 'unit')
             .attr('text-anchor', 'end')
             .style('font-size', '10px')
             .attr('x', margin + 90)

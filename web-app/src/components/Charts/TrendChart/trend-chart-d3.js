@@ -200,5 +200,9 @@ export default function TrendChart(
         .selectAll('text')
         .attr('dx', '18px')
 
+    svg.selectAll('.tick')
+        .filter((d) => d === 0)
+        .remove()
+
     return { node, clipPath, timeScale }
 }

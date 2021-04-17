@@ -40,7 +40,6 @@ const Visualization = () => {
                     {'< Back to global data'}
                 </div>
             )}
-            <CaseTrends />
             {/* <div className='flex justify-around w-full mb-2 mt-2'>
                 {LINKS.map((link) => (
                     <a
@@ -52,6 +51,7 @@ const Visualization = () => {
                 ))}
             </div> */}
             <div className='overflow-y-auto overflow-x-hidden h-auto w-full'>
+                <CaseTrends />
                 <AudioFeatures />
                 <StreamDuration />
                 <Releases />
