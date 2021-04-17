@@ -44,12 +44,11 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
         data.forEach((d) => {
             xMax = Math.max(xMax, d.totalCount)
         })
-
         let xMin = 100
         data.forEach((d) => {
             xMin = Math.min(xMin, d.totalCount)
         })
-
+        const formatTime = timeFormat('%d-%b-%y')
         const newReleaseSelector = 'totalCount'
         const xScale = scaleTime()
             .domain(extent(data, (d) => d.date))
@@ -116,9 +115,7 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
                                 )
                         )
                         .attr('class', 'main-tooltip-area-text')
-                        .text(
-                            `W${value.weekNumber}: ${value[newReleaseSelector]}`
-                        )
+                        .text(`${formatTime(value.date)}`)
                         .attr('x', xScale(value.date))
                         .attr('text-anchor', 'middle')
                         .attr('y', yScale(value[newReleaseSelector]) - 8)
