@@ -96,6 +96,7 @@ export async function getWeeklyReleaseData(countryCode) {
             newNode.in6Month = in6Month
             newNode.in1Year = in1Year
             newNode.beyond1Year = beyond1Year
+            newNode.totalCount = weeklyTopSongs.length
             newNode.date = startDate
 
             weeklyAll.push(newNode)
