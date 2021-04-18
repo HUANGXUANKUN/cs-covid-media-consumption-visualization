@@ -48,6 +48,8 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
         data.forEach((d) => {
             xMin = Math.min(xMin, d.totalCount)
         })
+        xMin -= 2
+        xMax += 2
         const formatTime = timeFormat('%d-%b-%y')
         const newReleaseSelector = 'totalCount'
         const xScale = scaleTime()
