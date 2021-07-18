@@ -87,7 +87,8 @@ export default function TrendChart(
 
     const valueScale = d3
         .scaleLinear()
-        .domain(d3.extent(entries.map((entry) => entry.value)))
+        .domain([0, d3.max(entries, (d) => d.value)])
+        // .domain(d3.extent(entries.map((entry) => entry.value)))
         .range([defaultConfig.h, 0])
 
     const areaPath = d3
@@ -162,9 +163,16 @@ export default function TrendChart(
 
     // Axis
 
-    const timeAxis = d3.axisBottom().scale(timeScale).tickSize(0)
+    const timeAxis = d3
+        .axisBottom()
+        .scale(timeScale)
+        .tickSize(0)
+        .tickFormat((d) =>
+            d.getMonth() === 0 ? d.getFullYear() : d3.timeFormat('%b')(d)
+        )
+
     const valueAxis = d3
-        .axisLeft()
+        .axisRight()
         .scale(valueScale)
         .ticks(3)
         .tickFormat((d) => d3.format('.2s')(d))
@@ -189,6 +197,12 @@ export default function TrendChart(
         .call(valueAxis)
         .style('color', 'rgb(86, 98, 118)')
         .style('text-anchor', 'end')
+        .selectAll('text')
+        .attr('dx', '18px')
+
+    svg.selectAll('.tick')
+        .filter((d) => d === 0)
+        .remove()
 
     return { node, clipPath, timeScale }
 }

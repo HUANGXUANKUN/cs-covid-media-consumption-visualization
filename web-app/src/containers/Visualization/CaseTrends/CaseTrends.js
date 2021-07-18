@@ -45,17 +45,22 @@ export default () => {
                 selected={selectedType}
                 onClick={setSelectedType}
             />
-            <TrendChart
-                data={covidData}
-                dateKey='date'
-                valueKey='confirmed'
-                svgClassName='m-auto'
-                width={window.innerWidth * 0.425}
-                height={150}
-                margin={{ left: 30, right: 20, top: 10, bottom: 20 }}
-                startDate={new Date(2020, 0, 1)}
-                currDate={timerContext.currentDate.toDate()}
-            />
+            <VisualizationBox
+                heading='h2'
+                headingText='Cumulative COVID-19 Case Trend'
+            >
+                <TrendChart
+                    data={covidData}
+                    dateKey='date'
+                    valueKey='confirmed'
+                    svgClassName='m-auto'
+                    width={window.innerWidth * 0.425}
+                    height={150}
+                    margin={{ left: 30, right: 20, top: 10, bottom: 20 }}
+                    startDate={new Date(2020, 0, 1)}
+                    currDate={timerContext.currentDate.toDate()}
+                />
+            </VisualizationBox>
         </VisualizationBox>
     )
 }

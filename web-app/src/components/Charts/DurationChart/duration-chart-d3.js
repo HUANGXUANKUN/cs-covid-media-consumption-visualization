@@ -87,17 +87,48 @@ export default function DurationChart(
         ])
         .range([histHeight, 0])
 
+    // Original
+    // const colorMaps = [
+    //     '#2c7bb6',
+    //     '#00a6ca',
+    //     '#00ccbc',
+    //     '#90eb9d',
+    //     '#ffff8c',
+    //     '#f9d057',
+    //     '#f29e2e',
+    //     '#e76818',
+    //     '#d7191c',
+    // ]
     const colorMaps = [
-        '#2c7bb6',
-        '#00a6ca',
-        '#00ccbc',
-        '#90eb9d',
-        '#ffff8c',
-        '#f9d057',
-        '#f29e2e',
-        '#e76818',
-        '#d7191c',
-    ]
+        '#d50000',
+        '#db2800',
+        '#e03d00',
+        '#e54e00',
+        '#ea5d00',
+        '#ee6c00',
+        '#f17a00',
+        '#f48700',
+        '#f79500',
+        '#f9a200',
+        '#fbae00',
+        '#fdbb00',
+        '#fec800',
+        '#ffd400',
+        '#ffe11a',
+        '#bed70b',
+        '#79ca23',
+        '#00ba3c',
+        '#00ba3c',
+        '#00b857',
+        '#00b473',
+        '#00b092',
+        '#00abb1',
+        '#009eed',
+        '#0081ff',
+        '#0072ff',
+        '#005dff',
+    ].reverse()
+
     const colors = d3
         .scaleQuantize()
         .domain([
@@ -105,6 +136,17 @@ export default function DurationChart(
             d3.max(dailyData, (d) => d.duration),
         ])
         .range(colorMaps)
+
+    // const maxDur = d3.max(dailyData, (d) => d.duration)
+    // const minDur = d3.min(dailyData, (d) => d.duration)
+    // const colors = d3
+    //     .scaleLinear()
+    //     .domain([minDur, (maxDur + minDur) / 2, maxDur])
+    //     .range([
+    //         colorMaps[0],
+    //         colorMaps[colorMaps.length / 2],
+    //         colorMaps[colorMaps.length - 1],
+    //     ])
 
     const dailyYAxis = d3
         .axisLeft(y)
@@ -152,6 +194,13 @@ export default function DurationChart(
         .attr('transform', `translate(${margin.left - 20}, ${margin.top})`)
         .call(dailyYAxis)
 
+    svg.append('text')
+        .attr('text-anchor', 'end')
+        .style('font-size', '10px')
+        .attr('x', margin.left + 20)
+        .attr('y', margin.top + 10)
+        .text('Hours')
+
     const weeklyYAxisNode = svg
         .append('g')
         .attr(
@@ -189,7 +238,7 @@ export default function DurationChart(
             .enter()
             .append('circle')
             .attr('class', 'weeklyDots')
-            .attr('cx', (d) => x(d.date))
+            .attr('cx', (d) => x(d.date) + 18)
             .attr('cy', (d) => weekScale(d.week))
             .attr('fill', (d) => colors(d.duration / 7))
             .attr('stroke', (d) => colors(d.duration / 7))
@@ -226,7 +275,7 @@ export default function DurationChart(
         .data(x.ticks(24))
         .enter()
         .append('text')
-        .attr('x', x)
+        .attr('x', (d) => x(d) + 18)
         .attr('y', 10)
         .attr('text-anchor', 'middle')
         .text((d) => formatMonth(d))

@@ -68,6 +68,7 @@ const GlobeCanvas = () => (
                             })
                         }
                         includeCountries={context.state.availableRegions}
+                        selectedCountry={context.state.selectedRegion}
                     />
                 )}
             </VisualizationContext.Consumer>

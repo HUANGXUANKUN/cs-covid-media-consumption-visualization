@@ -68,7 +68,7 @@ const Dots = () => {
 /**
  * Country geo-location dot mesh component
  */
-const CountryDots = ({ onClick, countries }) => {
+const CountryDots = ({ onClick, countries, selectedCountry }) => {
     const ref = useRef()
     const [renderedTooltips, setRenderedTooltips] = useState({})
     const [clickedTooltips, setClickedTooltips] = useState({})
@@ -88,7 +88,7 @@ const CountryDots = ({ onClick, countries }) => {
             ref.current.setMatrixAt(index, tempObject.matrix)
         })
         ref.current.instanceMatrix.needsUpdate = true
-    }, [])
+    }, [selectedCountry])
 
     useFrame(({ clock }) => {
         const base = clock.elapsedTime * 2
@@ -157,7 +157,7 @@ const CountryDots = ({ onClick, countries }) => {
             }}
         >
             <icosahedronBufferGeometry args={[3, 1, 1]} />
-            <meshBasicMaterial transparent color='#1DB954' opacity={0.5} />
+            <meshBasicMaterial transparent opacity={0.5} color='#1DB954' />
         </instancedMesh>
     )
 }
@@ -165,6 +165,7 @@ const CountryDots = ({ onClick, countries }) => {
 CountryDots.propTypes = {
     onClick: PropTypes.func,
     countries: PropTypes.arrayOf(PropTypes.string),
+    selectedCountry: PropTypes.string,
 }
 
 CountryDots.defaultProps = {
@@ -175,16 +176,21 @@ CountryDots.defaultProps = {
 /**
  * Dot mesh combination component
  */
-const Globe = ({ onClickCountry, includeCountries }) => (
+const Globe = ({ onClickCountry, includeCountries, selectedCountry }) => (
     <>
         <Dots />
-        <CountryDots onClick={onClickCountry} countries={includeCountries} />
+        <CountryDots
+            onClick={onClickCountry}
+            countries={includeCountries}
+            selectedCountry={selectedCountry}
+        />
     </>
 )
 
 Globe.propTypes = {
     onClickCountry: PropTypes.func.isRequired,
     includeCountries: PropTypes.arrayOf(PropTypes.string),
+    selectedCountry: PropTypes.string,
 }
 
 export default Globe

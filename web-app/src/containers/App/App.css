@@ -1,13 +1,13 @@
 .canvas-container {
     flex: 1;
-    max-width: 50%;
-    max-height: 75vh;
+    max-width: 37%;
+    max-height: 80vh;
     min-height: 600px;
 }
 
 .visualization-container {
     flex: 1;
-    max-width: 50%;
+    max-width: 63%;
     padding: 2rem;
 }
 

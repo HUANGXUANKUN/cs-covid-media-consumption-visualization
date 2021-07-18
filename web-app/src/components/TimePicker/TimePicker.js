@@ -6,7 +6,9 @@ import moment from 'moment'
  * Time picker component
  */
 const TimePicker = ({ currentDate }) => (
-    <span>{currentDate.format('YYYY-MM-DD')}</span>
+    <span className='font-bold text-3xl'>
+        {currentDate.format('YYYY-MM-DD')}
+    </span>
 )
 
 TimePicker.propTypes = {

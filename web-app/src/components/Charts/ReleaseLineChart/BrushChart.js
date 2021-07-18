@@ -42,22 +42,19 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
         ]
         let xMax = 0
         data.forEach((d) => {
-            xMax = Math.max(
-                xMax,
-                d[keys[0]],
-                d[keys[1]],
-                d[keys[2]],
-                d[keys[3]],
-                d[keys[4]]
-            )
+            xMax = Math.max(xMax, d.totalCount)
         })
-
-        const newReleaseSelector = 'in1Month'
+        let xMin = 100
+        data.forEach((d) => {
+            xMin = Math.min(xMin, d.totalCount)
+        })
+        const formatTime = timeFormat('%d-%b-%y')
+        const newReleaseSelector = 'totalCount'
         const xScale = scaleTime()
             .domain(extent(data, (d) => d.date))
             .range([margin, width - margin])
 
-        const yScale = scaleLinear().domain([0, xMax]).range([height, 0])
+        const yScale = scaleLinear().domain([xMin, xMax]).range([height, 0])
 
         const lineGenerator = line()
             .x((d) => xScale(d.date))
@@ -118,9 +115,7 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
                                 )
                         )
                         .attr('class', 'main-tooltip-area-text')
-                        .text(
-                            `W${value.weekNumber}: ${value[newReleaseSelector]}`
-                        )
+                        .text(`${formatTime(value.date)}`)
                         .attr('x', xScale(value.date))
                         .attr('text-anchor', 'middle')
                         .attr('y', yScale(value[newReleaseSelector]) - 8)
@@ -145,6 +140,15 @@ const BrushChart = ({ data, children, startDate, endDate }) => {
         svg.select('.y-axis')
             .attr('transform', `translate(${margin}, 0)`)
             .call(yAxis)
+
+        svg.select('.unit').remove()
+        svg.append('text')
+            .attr('class', 'unit')
+            .attr('text-anchor', 'end')
+            .style('font-size', '10px')
+            .attr('x', margin + 90)
+            .attr('y', margin - 10)
+            .text('Number of Songs')
 
         const brush = brushX()
             .extent([

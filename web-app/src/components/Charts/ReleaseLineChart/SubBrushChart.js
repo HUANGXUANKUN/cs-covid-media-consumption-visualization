@@ -127,6 +127,15 @@ function SubBrushChart({ data, selection, id = 'myClipPath' }) {
             .duration(300)
             .call(yAxis)
 
+        svg.select('.unit').remove()
+        svg.append('text')
+            .attr('class', 'unit')
+            .attr('text-anchor', 'end')
+            .style('font-size', '10px')
+            .attr('x', margin + 90)
+            .attr('y', margin - 10)
+            .text('Number of Songs')
+
         svg.selectAll('.legend-rect').remove()
         svg.selectAll('.legend-text').remove()
 

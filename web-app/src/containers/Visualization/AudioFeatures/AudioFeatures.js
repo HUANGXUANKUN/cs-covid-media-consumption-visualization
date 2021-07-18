@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import * as moment from 'moment'
 import { TimerContext, VisualizationContext } from '../../../contexts'
 import CalendarHeatMap from '../../../components/Charts/CalendarHeatMap'
 import RadarChart from '../../../components/Charts/RadarChart'
@@ -26,6 +27,8 @@ export default () => {
     const [currData, yearBeforeData] = audioFeatureData
     const [heatMapData, setHeatMapData] = useState({})
 
+    const [selectedDate, setSelectedDate] = useState(null)
+
     useEffect(() => {
         getAudioFeatureYoYChangeSeries(
             visualizationContext.state.selectedRegion,
@@ -37,9 +40,13 @@ export default () => {
     useEffect(() => {
         getWeightedAudioFeaturesComparison(
             visualizationContext.state.selectedRegion,
-            timerContext.currentDate
+            selectedDate || timerContext.currentDate
         ).then(setAudioFeatureData)
-    }, [visualizationContext.state.selectedRegion, timerContext.currentDate])
+    }, [
+        visualizationContext.state.selectedRegion,
+        timerContext.currentDate,
+        selectedDate,
+    ])
 
     return (
         <VisualizationBox
@@ -50,7 +57,7 @@ export default () => {
         >
             <VisualizationBox
                 heading='h2'
-                headingText='Calendar Heatmap Based on Year-on-Year Change'
+                headingText='Year-on-Year Change of Feature Score, 2020 vs. 2019'
                 subtitle={
                     <>
                         The calendar heatmap shows the general trend of
@@ -86,15 +93,27 @@ export default () => {
                 <CalendarHeatMap
                     startDate={new Date(2020, 0, 1)}
                     data={heatMapData}
-                    currentDate={timerContext.currentDate.toDate()}
                     color='red'
+                    onClickDate={(date) => {
+                        setSelectedDate(moment(date))
+                    }}
                 />
             </VisualizationBox>
             <VisualizationBox
                 heading='h2'
                 headingText='Day-specific Audio Feature Comparison'
+                subHeadingText='On a scale from 0 to 1'
                 subtitle='The radar chart above shows the weighted average audio feature of the top songs on a specific date with a comparison of what it looked like exactly one year ago.'
             >
+                {selectedDate && (
+                    <button
+                        className='focus:outline-none block pt-2 pb-2 pl-3 pr-3 rounded-sm bg-green-400 text-white font-bold uppercase'
+                        type='button'
+                        onClick={() => setSelectedDate(null)}
+                    >
+                        Reset date
+                    </button>
+                )}
                 {audioFeatureData.length > 0 && (
                     <div className='m-2 flex justify-around items-center h-auto w-full'>
                         <div className='flex flex-col items-center'>
@@ -108,7 +127,9 @@ export default () => {
                                 className='inline-block h-64'
                             />
                             <span className='text-sm'>
-                                {timerContext.currentDate.format('MMM D YYYY')}
+                                {(
+                                    selectedDate || timerContext.currentDate
+                                ).format('MMM D YYYY')}
                             </span>
                         </div>
                         <div className='flex flex-col items-center'>
@@ -122,7 +143,7 @@ export default () => {
                                 className='inline-block h-64'
                             />
                             <span className='text-sm'>
-                                {timerContext.currentDate
+                                {(selectedDate || timerContext.currentDate)
                                     .clone()
                                     .add(-1, 'year')
                                     .format('MMM D YYYY')}

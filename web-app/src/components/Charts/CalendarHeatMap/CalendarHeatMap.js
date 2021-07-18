@@ -1,20 +1,17 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import * as CalHeatMap from 'cal-heatmap'
 import PropTypes from 'prop-types'
+import './CalendarHeatMap.css'
 
 /**
  * Calendar heatmap component
  */
-const CalendarHeatMap = ({ startDate, currentDate, data, color }) => {
+const CalendarHeatMap = ({ startDate, data, color, onClickDate }) => {
     const calRef = useRef()
 
     useEffect(() => {
         calRef.current.update(data)
     }, [data])
-
-    useEffect(() => {
-        calRef.current.highlight(currentDate)
-    }, [currentDate])
 
     useLayoutEffect(() => {
         const cal = new CalHeatMap()
@@ -23,16 +20,19 @@ const CalendarHeatMap = ({ startDate, currentDate, data, color }) => {
             domain: 'month',
             cellSize: 9,
             start: startDate,
-            highlight: currentDate,
             range: 12,
             displayLegend: true,
             legendVerticalPosition: 'top',
+            domainLabelFormat: '%b',
             subDomainTitleFormat: {
                 empty: 'No negative change on {data}',
-                filled: '{count}% negative change in feature on {date}',
+                filled: '{count}% change in feature on {date}',
             },
             considerMissingDataAsZero: true,
             legendColors: ['#e5e5e5', color],
+            onClick(date) {
+                onClickDate(date)
+            },
             data,
         })
         calRef.current = cal
@@ -48,9 +48,9 @@ const CalendarHeatMap = ({ startDate, currentDate, data, color }) => {
 
 CalendarHeatMap.propTypes = {
     startDate: PropTypes.instanceOf(Date).isRequired,
-    currentDate: PropTypes.instanceOf(Date).isRequired,
     data: PropTypes.object.isRequired,
     color: PropTypes.string.isRequired,
+    onClickDate: PropTypes.func,
 }
 
 export default CalendarHeatMap

@@ -29,7 +29,7 @@ export default function RadarChart(
         labelFactor: 1.25, // How much farther than the radius of the outer circle should the labels be placed
         wrapWidth: 60, // The number of pixels after which a label needs to be given a new line
         opacityArea: 0.35, // The opacity of the area of the blob
-        dotRadius: 4, // The size of the colored circles of each blog
+        dotRadius: 8, // The size of the colored circles of each blog
         opacityCircles: 0.1, // The opacity of the circles of each blob
         strokeWidth: 2, // The width of the stroke around each blob
         roundStrokes: false, // If true the area and stroke will follow a round path (cardinal-closed)
@@ -301,7 +301,8 @@ export default function RadarChart(
         .on('mouseover', function onMouseOver(e, data) {
             const newX = parseFloat(d3.select(this).attr('cx')) - 10
             const newY = parseFloat(d3.select(this).attr('cy')) - 10
-            d3.select('.tooltip')
+            d3.select(node)
+                .select('.tooltip')
                 .attr('x', newX)
                 .attr('y', newY)
                 .text(numberFormatter(data.value))
@@ -310,7 +311,11 @@ export default function RadarChart(
                 .style('opacity', 1)
         })
         .on('mouseout', () => {
-            d3.select('.tooltip').transition().duration(200).style('opacity', 0)
+            d3.select(node)
+                .select('.tooltip')
+                .transition()
+                .duration(200)
+                .style('opacity', 0)
         })
 
     // Taken from http://bl.ocks.org/mbostock/7555321
